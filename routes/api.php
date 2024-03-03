@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\PlaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-
+use App\Http\Controllers\PlaceTypesController;
+use App\Http\Controllers\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +25,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register_user', [AuthController::class, 'register']);
 Route::post('login_user', [AuthController::class, 'login']);
+Route::resource('place_types', PlaceTypesController::class);
+Route::resource('place', PlaceController::class);
+
+
+
+
+Route::group([
+    'middleware' => 'auth:api'
+], function () {
+
+    Route::post('/places/{placeId}/rate', [RatingController::class, 'store']);
+
+});
